@@ -1,6 +1,6 @@
 NAME 	=	DivideAndConquer
 CC		= 	c++
-SRC		=	DivideAndConquer.cpp
+SRC		=	DivideAndRule.cpp
 FLAGS	= -std=c++98 -Wall -Wextra -Werror 
 
 all : $(NAME)
