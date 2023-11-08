@@ -3,8 +3,9 @@
 
 struct Account
 {
-	int id;
-	int value;
+	protected:
+		int id;
+		int value;
 
 
 	Account() :
@@ -29,12 +30,15 @@ struct Account
 		p_os << "[" << p_account.id << "] - [" << p_account.value << "]";
 		return (p_os);
 	}
+
+	friend struct Bank;
 };
 
 struct Bank
 {
-	int liquidity;
-	std::vector<Account *> clientAccounts;
+	protected:
+		int liquidity;
+		std::vector<Account *> clientAccounts;
 
 	Bank() :
 		liquidity(0)
@@ -52,14 +56,43 @@ struct Bank
 		return (clientAccounts);
 	}
 
+	Account *createAccount(int p_value)
+	{
+		Account *newAccount = new Account();
+		newAccount->id = clientAccounts.size();
+		newAccount->value = p_value;
+		clientAccounts.push_back(newAccount);
+		return (newAccount);
+	}
+
+	Account *deleteAccount(int p_id)
+	{
+		Account *deletedAccount = nullptr;
+		for (std::vector<Account *>::iterator it = clientAccounts.begin(); it != clientAccounts.end(); ++it)
+		{
+			if ((*it)->id == p_id)
+			{
+				deletedAccount = *it;
+				clientAccounts.erase(it);
+				break;
+			}
+		}
+		return (deletedAccount);
+	}
+
 	friend std::ostream& operator << (std::ostream& p_os, const Bank& p_bank)
 	{
 		p_os << "Bank informations : " << std::endl;
 		p_os << "Liquidity : " << p_bank.liquidity << std::endl;
-		for (auto &clientAccount : p_bank.clientAccounts)
-        p_os << *clientAccount << std::endl;
+		// for (auto &clientAccount : p_bank.clientAccounts)
+		for (std::vector<Account *>::const_iterator it = p_bank.clientAccounts.begin(); it != p_bank.clientAccounts.end(); ++it)
+		{
+			p_os << **it << std::endl;
+		}
 		return (p_os);
 	}
+
+	friend struct Account;
 };
 
 int main()
