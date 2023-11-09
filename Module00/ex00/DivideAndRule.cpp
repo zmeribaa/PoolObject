@@ -3,7 +3,7 @@
 
 struct Account
 {
-	protected:
+	private:
 		int id;
 		int value;
 
@@ -15,120 +15,137 @@ struct Account
 	
 	}
 
+	public:
+		int getId() const{
+			return (id);
+		}
 
-	int getID() const{
-		return (id);
-	}
+		int getValue() const
+		{
+			return (value);
+		}
 
-	int getValue() const
-	{
-		return (value);
-	}
-
-	friend std::ostream& operator << (std::ostream& p_os, const Account& p_account)
-	{
-		p_os << "[" << p_account.id << "] - [" << p_account.value << "]";
-		return (p_os);
-	}
 
 	friend struct Bank;
 };
 
+	std::ostream& operator << (std::ostream&os, const Account& account)
+	{
+		os << "[" << account.getId() << "] - [" << account.getValue() << "]";
+		return (os);
+	}
 struct Bank
 {
-	protected:
+	private:
 		int liquidity;
 		std::vector<Account *> clientAccounts;
-
-	Bank() :
-		liquidity(0)
-	{
-
-	}
-
-	int getTotalLiquidity() const
-	{
-		return (liquidity);
-	}
-
-	std::vector<Account *> getClientAccounts() const
-	{
-		return (clientAccounts);
-	}
-
-	int  createAccount(int p_value)
-	{
-		Account *newAccount = new Account();
-		newAccount->id = clientAccounts.size();
-		newAccount->value = p_value * 0.95;
-		liquidity += p_value * 0.05;
-		clientAccounts.push_back(newAccount);
-		std::cout << "Account Created" << std::endl;
-		return (newAccount->id);
-	}
-
-	void deleteAccount(int p_id)
-	{
-		if(!p_id)
-			return;
-		for (std::vector<Account *>::iterator it = clientAccounts.begin(); it != clientAccounts.end(); ++it)
+	public:
+		Bank() :
+			liquidity(0)
 		{
-			if ((*it)->id == p_id)
-			{
-				clientAccounts.erase(it);
-				break;
-			}
+
 		}
-		std::cout << "Account Deleted" << std::endl;
-	}
 
-	void modifyAccount(int p_id, int p_value)
-	{
-		if(p_id)
+		int getTotalLiquidity() const
 		{
+			return (liquidity);
+		}
+
+		std::vector<Account *> getClientAccounts() const
+		{
+			return (clientAccounts);
+		}
+
+		int  createAccount(int value)
+		{
+			Account *newAccount = new Account();
+			newAccount->id = clientAccounts.size();
+			newAccount->value = value * 0.95;
+			liquidity += value * 0.05;
+			clientAccounts.push_back(newAccount);
+			std::cout << "Account Created" << std::endl;
+			return (newAccount->id);
+		}
+
+		void deleteAccount(int id)
+		{
+			if(!id)
+				return;
 			for (std::vector<Account *>::iterator it = clientAccounts.begin(); it != clientAccounts.end(); ++it)
 			{
-				if ((*it)->id == p_id)
+				if ((*it)->id == id)
 				{
-					(*it)->value = p_value * 0.95;
-					liquidity += p_value * 0.05;
+					clientAccounts.erase(it);
 					break;
 				}
 			}
-			std::cout << "Account Modified" << std::endl;
+			std::cout << "Account Deleted" << std::endl;
 		}
-		std::cout << "Account not found" << std::endl;
-	}
 
-	void loan(int p_id, int p_value)
-	{
-		for (std::vector<Account *>::iterator it = clientAccounts.begin(); it != clientAccounts.end(); ++it)
+		void modifyAccount(int id, int value)
 		{
-			if ((*it)->id == p_id)
+			if(id)
 			{
-				(*it)->value += p_value;
-				liquidity -= p_value;
+				for (std::vector<Account *>::iterator it = clientAccounts.begin(); it != clientAccounts.end(); ++it)
+				{
+					if ((*it)->id == id)
+					{
+						(*it)->value = value * 0.95;
+						liquidity += value * 0.05;
+						break;
+					}
+				}
 				std::cout << "Account Modified" << std::endl;
-				return;
 			}
+			std::cout << "Account not found" << std::endl;
 		}
-		std::cout << "Account not found" << std::endl;
-	}
 
-	friend std::ostream& operator << (std::ostream& p_os, const Bank& p_bank)
-	{
-		p_os << "Bank informations : " << std::endl;
-		p_os << "Liquidity : " << p_bank.liquidity << std::endl;
-		// for (auto &clientAccount : p_bank.clientAccounts)
-		for (std::vector<Account *>::const_iterator it = p_bank.clientAccounts.begin(); it != p_bank.clientAccounts.end(); ++it)
-			p_os << **it << std::endl;
-		return (p_os);
-	}
+		void loan(int id, int value)
+		{
+			for (std::vector<Account *>::iterator it = clientAccounts.begin(); it != clientAccounts.end(); ++it)
+			{
+				if ((*it)->id == id)
+				{
+					if (liquidity < value)
+					{
+						std::cout << "Not enough liquidity" << std::endl;
+						return;
+					}
+					(*it)->value += value;
+					liquidity -= value;
+					std::cout << "Account Modified" << std::endl;
+					return;
+				}
+			}
+			std::cout << "Account not found" << std::endl;
+		}
+
 
 	friend struct Account;
 };
 
+		std::ostream& operator << (std::ostream& os, const Bank& bank)
+		{
+			os << "Bank informations : " << std::endl;
+			os << "Liquidity : " << bank.getTotalLiquidity() << std::endl;
+			// for (auto &clientAccount : bank.clientAccounts)
+			for (std::vector<Account *>::const_iterator it = bank.getClientAccounts().begin(); it != bank.getClientAccounts().end(); ++it)
+				os << **it << std::endl;
+			return (os);
+		}
 int main()
 {
+	Bank bank;
+	int id1 = bank.createAccount(1000);
+	int id2 = bank.createAccount(2000);
+	int id3 = bank.createAccount(3000);
+	std::cout << bank << std::endl;
+	bank.deleteAccount(id2);
+	std::cout << bank << std::endl;
+	bank.modifyAccount(id1, 5000);
+	std::cout << bank << std::endl;
+	bank.loan(id3, 1000);
+	std::cout << bank << std::endl;
+	return (0);
 	
 }
