@@ -3,9 +3,16 @@
 
 # include <iostream>
 # include <string>
+# include <vector>
+# include "Account.hpp"
 
+class Account;
 class Bank
 {
+	protected:
+
+		int liquidity;
+		std::vector<Account *> clientAccounts;
 
 	public:
 

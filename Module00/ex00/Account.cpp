@@ -1,15 +1,16 @@
-#include "Bank.hpp"
+#include "Account.hpp"
 
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
 
-Bank::Bank() : liquidity(0)
+Account::Account() : id(-1), value(0)
 {
 }
 
-Bank::Bank( const Bank & src )
+Account::Account( const Account & src )
 {
+	*this = src;
 }
 
 
@@ -17,7 +18,7 @@ Bank::Bank( const Bank & src )
 ** -------------------------------- DESTRUCTOR --------------------------------
 */
 
-Bank::~Bank()
+Account::~Account()
 {
 }
 
@@ -26,7 +27,7 @@ Bank::~Bank()
 ** --------------------------------- OVERLOAD ---------------------------------
 */
 
-Bank &				Bank::operator=( Bank const & rhs )
+Account &				Account::operator=( Account const & rhs )
 {
 	//if ( this != &rhs )
 	//{
@@ -35,7 +36,7 @@ Bank &				Bank::operator=( Bank const & rhs )
 	return *this;
 }
 
-std::ostream &			operator<<( std::ostream & o, Bank const & i )
+std::ostream &			operator<<( std::ostream & o, Account const & i )
 {
 	//o << "Value = " << i.getValue();
 	return o;

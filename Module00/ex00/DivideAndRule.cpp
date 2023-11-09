@@ -56,28 +56,63 @@ struct Bank
 		return (clientAccounts);
 	}
 
-	Account *createAccount(int p_value)
+	int  createAccount(int p_value)
 	{
 		Account *newAccount = new Account();
 		newAccount->id = clientAccounts.size();
-		newAccount->value = p_value;
+		newAccount->value = p_value * 0.95;
+		liquidity += p_value * 0.05;
 		clientAccounts.push_back(newAccount);
-		return (newAccount);
+		std::cout << "Account Created" << std::endl;
+		return (newAccount->id);
 	}
 
-	Account *deleteAccount(int p_id)
+	void deleteAccount(int p_id)
 	{
-		Account *deletedAccount = nullptr;
+		if(!p_id)
+			return;
 		for (std::vector<Account *>::iterator it = clientAccounts.begin(); it != clientAccounts.end(); ++it)
 		{
 			if ((*it)->id == p_id)
 			{
-				deletedAccount = *it;
 				clientAccounts.erase(it);
 				break;
 			}
 		}
-		return (deletedAccount);
+		std::cout << "Account Deleted" << std::endl;
+	}
+
+	void modifyAccount(int p_id, int p_value)
+	{
+		if(p_id)
+		{
+			for (std::vector<Account *>::iterator it = clientAccounts.begin(); it != clientAccounts.end(); ++it)
+			{
+				if ((*it)->id == p_id)
+				{
+					(*it)->value = p_value * 0.95;
+					liquidity += p_value * 0.05;
+					break;
+				}
+			}
+			std::cout << "Account Modified" << std::endl;
+		}
+		std::cout << "Account not found" << std::endl;
+	}
+
+	void loan(int p_id, int p_value)
+	{
+		for (std::vector<Account *>::iterator it = clientAccounts.begin(); it != clientAccounts.end(); ++it)
+		{
+			if ((*it)->id == p_id)
+			{
+				(*it)->value += p_value;
+				liquidity -= p_value;
+				std::cout << "Account Modified" << std::endl;
+				return;
+			}
+		}
+		std::cout << "Account not found" << std::endl;
 	}
 
 	friend std::ostream& operator << (std::ostream& p_os, const Bank& p_bank)
@@ -86,9 +121,7 @@ struct Bank
 		p_os << "Liquidity : " << p_bank.liquidity << std::endl;
 		// for (auto &clientAccount : p_bank.clientAccounts)
 		for (std::vector<Account *>::const_iterator it = p_bank.clientAccounts.begin(); it != p_bank.clientAccounts.end(); ++it)
-		{
 			p_os << **it << std::endl;
-		}
 		return (p_os);
 	}
 
@@ -97,30 +130,5 @@ struct Bank
 
 int main()
 {
-	Account accountA = Account();
-	accountA.id = 0;
-	accountA.value = 100;
-
-	Account accountB = Account();
-	accountB.id = 1;
-	accountB.value = 100;
-
-	Bank bank = Bank();
-	bank.liquidity = 999;
-	bank.clientAccounts.push_back(&accountA);
-	bank.clientAccounts.push_back(&accountB);
-
-	bank.liquidity -= 200;
-	accountA.value += 400;
-
-	std::cout << "Account : " << std::endl;
-	std::cout << accountA << std::endl;
-	std::cout << accountB << std::endl;
-
-	std::cout << " ----- " << std::endl;
-
-	std::cout << "Bank : " << std::endl;
-	std::cout << bank << std::endl;
-
-	return (0);
+	
 }
