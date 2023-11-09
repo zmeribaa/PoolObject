@@ -1,7 +1,7 @@
-NAME 	=	DivideAndConquer
+NAME 	=	a.out
 CC		= 	c++
 SRC		=	DivideAndRule.cpp
-FLAGS	= -std=c++98 -Wall -Wextra -Werror 
+FLAGS	= -std=c++98 -Wall -Wextra -Werror -g3
 
 all : $(NAME)
 

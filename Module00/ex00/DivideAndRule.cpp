@@ -8,14 +8,14 @@ struct Account
 		int value;
 
 
-	Account() :
-		id(-1),
-		value(0)
-	{
-	
-	}
 
 	public:
+		Account(int id, int value) :
+			id(id),
+			value(value)
+		{
+		
+		}
 		int getId() const{
 			return (id);
 		}
@@ -41,7 +41,7 @@ struct Bank
 		std::vector<Account *> clientAccounts;
 	public:
 		Bank() :
-			liquidity(0)
+			liquidity(1), clientAccounts()
 		{
 
 		}
@@ -51,20 +51,20 @@ struct Bank
 			return (liquidity);
 		}
 
-		std::vector<Account *> getClientAccounts() const
+		const std::vector<Account *> & getClientAccounts() const
 		{
 			return (clientAccounts);
 		}
 
 		int  createAccount(int value)
 		{
-			Account *newAccount = new Account();
-			newAccount->id = clientAccounts.size();
-			newAccount->value = value * 0.95;
+			int id = clientAccounts.size();
+			int accountValue = value * 0.95;
+			Account *newAccount = new Account(id, accountValue);
 			liquidity += value * 0.05;
 			clientAccounts.push_back(newAccount);
 			std::cout << "Account Created" << std::endl;
-			return (newAccount->id);
+			return id;
 		}
 
 		void deleteAccount(int id)
@@ -119,16 +119,12 @@ struct Bank
 			}
 			std::cout << "Account not found" << std::endl;
 		}
-
-
-	friend struct Account;
 };
 
 		std::ostream& operator << (std::ostream& os, const Bank& bank)
 		{
 			os << "Bank informations : " << std::endl;
 			os << "Liquidity : " << bank.getTotalLiquidity() << std::endl;
-			// for (auto &clientAccount : bank.clientAccounts)
 			for (std::vector<Account *>::const_iterator it = bank.getClientAccounts().begin(); it != bank.getClientAccounts().end(); ++it)
 				os << **it << std::endl;
 			return (os);
