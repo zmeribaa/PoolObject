@@ -15,7 +15,7 @@ class Hammer : public Tool
 		~Hammer();
 
 		Hammer &		operator=( Hammer const & rhs );
-		void use() override;
+		void use();
 
 	private:
 

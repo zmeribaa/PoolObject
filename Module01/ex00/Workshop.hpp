@@ -4,7 +4,9 @@
 # include <iostream>
 # include <string>
 # include "Worker.hpp"
+# include <vector>
 
+class Worker;
 class Workshop
 {
 	std::vector<Worker *> workers;

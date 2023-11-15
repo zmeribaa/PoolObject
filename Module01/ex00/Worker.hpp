@@ -9,6 +9,8 @@
 # include "Workshop.hpp"
 # include <vector>
 # include <algorithm>
+
+class Workshop;
 class Worker
 {
 	Position coordonnee;

@@ -16,7 +16,7 @@ class Shovel : public Tool
 		~Shovel();
 
 		Shovel &		operator=( Shovel const & rhs );
-		void use() override;
+		void use();
 
 	private:
 

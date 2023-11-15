@@ -60,6 +60,7 @@ void Workshop::executeWorkDay()
 	{
 		(*it)->work();
 	}
+	std::cout << "Workshop finished working" << std::endl;
 }
 
 std::ostream &			operator<<( std::ostream & o, Workshop const & i )
