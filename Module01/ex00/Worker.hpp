@@ -22,6 +22,7 @@ class Worker
 
 		Worker();
 		Worker( Worker const & src );
+		Worker(Position coordonnee, Statistic stat);
 		~Worker();
 
 		Worker &		operator=( Worker const & rhs );

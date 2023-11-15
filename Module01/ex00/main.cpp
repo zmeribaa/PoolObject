@@ -6,8 +6,8 @@
 
 int main() {
     // Create tools
-    Shovel shovel;
-    Hammer hammer;
+    Shovel * shovel = new Shovel();
+    Hammer * hammer = new Hammer();
 
     // Create a couple of workshops
     Workshop workshop1;
@@ -17,8 +17,8 @@ int main() {
     Worker worker1;
 
     // Assign tools to the worker
-    worker1.addTool(&shovel);
-    worker1.addTool(&hammer);
+    worker1.addTool(shovel);
+    worker1.addTool(hammer);
 
     // Register the worker to the workshops
     worker1.registerToWorkshop(&workshop1);
