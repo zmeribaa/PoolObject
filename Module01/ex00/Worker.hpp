@@ -5,13 +5,16 @@
 # include <string>
 # include "Position.hpp"
 # include "Statistic.hpp"
-# include "Shovel.hpp"
-
+# include "Tool.hpp"
+# include "Workshop.hpp"
+# include <vector>
+# include <algorithm>
 class Worker
 {
 	Position coordonnee;
 	Statistic stat;
-	Shovel *pelle;
+	std::vector<Tool *> tools;
+	std::vector<Workshop *> workshops;
 
 	public:
 
@@ -20,9 +23,12 @@ class Worker
 		~Worker();
 
 		Worker &		operator=( Worker const & rhs );
-		void	assignShovel(Shovel *newShovel);
-		void	removeShovel();
-		void	useShovel();
+		void addTool(Tool *tool);
+		void useTool(Tool *tool);
+		void removeTool(Tool *tool);
+		void registerToWorkshop(Workshop *workshop);
+		void releaseFromWorkshop(Workshop *workshop);
+		void work();
 
 	private:
 

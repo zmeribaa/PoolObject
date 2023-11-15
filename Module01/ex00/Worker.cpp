@@ -6,14 +6,14 @@
 
 Worker::Worker()
 {
-	pelle = nullptr;
+
 }
 
 Worker::Worker( const Worker & src )
 {
 	coordonnee = src.coordonnee;
 	stat = src.stat;
-	pelle = src.pelle;
+	tools = src.tools;
 }
 
 
@@ -36,28 +36,53 @@ Worker &				Worker::operator=( Worker const & rhs )
 	{
 		coordonnee = rhs.coordonnee;
 		stat = rhs.stat;
-		pelle = rhs.pelle;
+		tools = rhs.tools;
 	}
 	return *this;
 }
 
-void	Worker::assignShovel(Shovel *newShovel)
+void Worker::addTool(Tool *tool)
 {
-	pelle = newShovel;
+	tools.push_back(tool);
 }
 
-void	Worker::removeShovel()
+void Worker::useTool(Tool *tool)
 {
-	pelle = nullptr;
+	tool->use();
 }
 
-void	Worker::useShovel()
+void Worker::registerToWorkshop(Workshop *workshop)
 {
-	if (pelle){
-		pelle->use();
-	} else {
-		std::cout << "No shovel assigned" << std::endl;
+	workshop->registerWorker(this);
+	workshops.push_back(workshop);
+}
+
+void Worker::releaseFromWorkshop(Workshop *workshop)
+{
+	workshop->releaseWorker(this);
+	std::vector<Workshop *>::iterator it = workshops.begin();
+	while (it != workshops.end())
+	{
+		if (*it == workshop)
+		{
+			workshops.erase(it);
+			return;
+		}
+		it++;
 	}
+}
+
+void Worker::work()
+{
+	for (std::vector<Tool *>::iterator it = tools.begin(); it != tools.end(); it++)
+	{
+		useTool(*it);
+	}
+}
+
+void Worker::removeTool(Tool *tool)
+{
+	tools.erase(std::remove(tools.begin(), tools.end(), tool), tools.end());
 }
 
 // std::ostream &			operator<<( std::ostream & o, Worker const & i )

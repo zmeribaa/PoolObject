@@ -1,19 +1,15 @@
-#include "Shovel.hpp"
+#include "Hammer.hpp"
 
 /*
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
 
-Shovel::Shovel()
+Hammer::Hammer()
 {
 }
 
-Shovel::Shovel( const Shovel & src )
+Hammer::Hammer( const Hammer & src )
 {
-	if (this != &src)
-	{
-		numberOfUses = src.numberOfUses;
-	}
 }
 
 
@@ -21,7 +17,7 @@ Shovel::Shovel( const Shovel & src )
 ** -------------------------------- DESTRUCTOR --------------------------------
 */
 
-Shovel::~Shovel()
+Hammer::~Hammer()
 {
 }
 
@@ -30,24 +26,24 @@ Shovel::~Shovel()
 ** --------------------------------- OVERLOAD ---------------------------------
 */
 
-Shovel &				Shovel::operator=( Shovel const & rhs )
+Hammer &				Hammer::operator=( Hammer const & rhs )
 {
-	if (this != &rhs)
-	{
-		numberOfUses = rhs.numberOfUses;
-	}
+	//if ( this != &rhs )
+	//{
+		//this->_value = rhs.getValue();
+	//}
 	return *this;
 }
 
-void Shovel::use()
+void Hammer::use()
 {
 	numberOfUses++;
-	std::cout << "Shovel used " << numberOfUses << " times" << std::endl;
+	std::cout << "Hammer used " << numberOfUses << " times" << std::endl;
 }
 
-std::ostream &			operator<<( std::ostream & o, Shovel const & i )
+std::ostream &			operator<<( std::ostream & o, Hammer const & i )
 {
-
+	//o << "Value = " << i.getValue();
 	return o;
 }
 

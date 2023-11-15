@@ -3,21 +3,20 @@
 
 # include <iostream>
 # include <string>
+# include "Tool.hpp"
 
-
-class Shovel
+class Shovel : public Tool
 {
 	
 
 	public:
-		int numberOfUses;
 
 		Shovel();
 		Shovel( Shovel const & src );
 		~Shovel();
 
 		Shovel &		operator=( Shovel const & rhs );
-		void use();
+		void use() override;
 
 	private:
 
